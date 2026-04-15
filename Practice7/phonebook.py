@@ -12,6 +12,7 @@ while True:
             6. Search by phone
             7. Update contact
             8. Delete contact
+            10. Search by work
             0. Exit
         """)
     choice = input("Choose: ")
@@ -34,5 +35,8 @@ while True:
         update_contact(username)
     elif choice == "8":
         delete_contact()
+    elif choice == "10":
+        work = input("Enter work: ")
+        search_by_user_work(work)
     elif choice == "0":
         break
