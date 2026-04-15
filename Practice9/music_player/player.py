@@ -26,7 +26,7 @@ class MusicPlayer:
         pygame.mixer.music.stop()
         self.is_playing = False
     def next(self):
-        self.current_index =(self.current_index + 1) % len(self.tracks)
+        self.current_index = (self.current_index+1) % len(self.tracks)
         self.play()
     def previous(self):
         self.current_index = (self.current_index - 1) % len(self.tracks)

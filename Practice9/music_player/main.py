@@ -3,8 +3,8 @@ from player import MusicPlayer
 
 pygame.init()
 
-size = width, height = 600, 400
-screen = pygame.display.set_mode(size)
+width, height = 600, 400
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Music Player")
 
 clock = pygame.time.Clock()
@@ -49,7 +49,7 @@ while running:
     # render text
     screen.blit(track_text, (50, 100))
     screen.blit(time_text, (50, 150))
-    screen.blit(controls_text, (50, 250))
+    screen.blit(controls_text, (50, 350))
     # display update
     pygame.display.flip()
     clock.tick(30)

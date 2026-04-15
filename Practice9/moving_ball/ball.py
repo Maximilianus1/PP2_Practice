@@ -3,6 +3,7 @@ import pygame
 
 class Ball:
     def __init__(self, screen_width, screen_height):
+        #initialize ball parameters
         self.radius = 25
         self.step = 20
         self.screen_width = screen_width
@@ -12,8 +13,10 @@ class Ball:
         self.color = (243, 50, 51)
 
     def move(self, dx, dy):
+        # compute new coordinates
         new_x = self.x + dx
         new_y = self.y + dy
+        # handle border collisions
         if self.radius <= new_x <= self.screen_width - self.radius:
             self.x = new_x
         if self.radius <= new_y <= self.screen_height - self.radius:
