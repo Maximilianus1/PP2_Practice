@@ -3,7 +3,7 @@ from player import MusicPlayer
 
 pygame.init()
 
-width, height = 600, 400
+width, height = 800, 400
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Music Player")
 
@@ -28,10 +28,16 @@ while running:
                 player.previous()
             elif event.key==pygame.K_q:
                 running=False
+            elif event.key == pygame.K_SPACE:
+                player.toggle_pause()
+            elif event.key in (pygame.K_PLUS, pygame.K_EQUALS, pygame.K_KP_PLUS):
+                player.volume_up(0.05)
+            elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                player.volume_down(0.05)
     screen.fill((200, 230, 255))
     # display text with name of track time and help with control
     track_text = font.render(
-        f"Track: {player.get_current_track()}",
+        f"{player.current_index+1}/{len(player.tracks)} Track: {player.get_current_track()}",
         True,
         (0, 70, 140)
     )
@@ -41,15 +47,22 @@ while running:
         True,
         (50, 120, 200)
     )
+    volume_percent = int(player.get_volume() * 100)
+    volume_text = font.render(
+        f"Volume: {volume_percent}%",
+        True,
+        (30, 90, 160)
+    )
     controls_text = font.render(
-        "P=Play S=Stop N=Next B=Back Q=Quit",
+        "P=Play S=Stop N=Next B=Back SPACE=Pause +/- Volume Q=Quit",
         True,
         (80, 100, 140)
     )
     # render text
-    screen.blit(track_text, (50, 100))
-    screen.blit(time_text, (50, 150))
-    screen.blit(controls_text, (50, 350))
+    screen.blit(track_text, (50, 80))
+    screen.blit(time_text, (50, 130))
+    screen.blit(volume_text, (50, 180))
+    screen.blit(controls_text, (20, 350))
     # display update
     pygame.display.flip()
     clock.tick(30)

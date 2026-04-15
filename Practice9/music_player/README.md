@@ -1,1 +1,1 @@
-P-Play Q-Quit B-Back N-NExt
+P=Play S=Stop N=Next B=Back SPACE=Pause +/- Volume Q=Quit
