@@ -1,0 +1,27 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyMethodMayBeStaticInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N801" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="projects.models.Project.objects" />
+          <option value="projects.models.Task.objects" />
+          <option value="bboard.models.Bulletin.objects" />
+          <option value="bboard.models.Comment.objects" />
+          <option value="bboard.models.Category.objects" />
+          <option value="bboard.models.Notification.objects" />
+          <option value="bboard.models.Rating.objects" />
+          <option value="bboard.models.Favorite.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
