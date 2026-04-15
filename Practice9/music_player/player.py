@@ -8,11 +8,13 @@ class MusicPlayer:
         music_folder = "music"
         pygame.mixer.init()
         self.tracks = []
+        #collect all exsisted tracks from folder music
         for file in sorted(os.listdir(music_folder)):
             if file.endswith((".wav", ".mp3")):
                 self.tracks.append(os.path.join(music_folder, file))
+        #Error handler
         if not self.tracks:
-            print("No WAV files found in music folder!")
+            print("No music files found in music folder!")
         self.current_index = 0
         self.is_playing = False
 

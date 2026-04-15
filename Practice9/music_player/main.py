@@ -13,8 +13,10 @@ player = MusicPlayer()
 running = True
 while running:
     for event in pygame.event.get():
+        # stops the program when quit
         if event.type==pygame.QUIT:
             running=False
+        # handle key events
         if event.type==pygame.KEYDOWN:
             if event.key==pygame.K_p:
                 player.play()
@@ -27,6 +29,7 @@ while running:
             elif event.key==pygame.K_q:
                 running=False
     screen.fill((200, 230, 255))
+    # display text with name of track time and help with control
     track_text = font.render(
         f"Track: {player.get_current_track()}",
         True,
@@ -43,9 +46,11 @@ while running:
         True,
         (80, 100, 140)
     )
+    # render text
     screen.blit(track_text, (50, 100))
     screen.blit(time_text, (50, 150))
     screen.blit(controls_text, (50, 250))
+    # display update
     pygame.display.flip()
     clock.tick(30)
 pygame.quit()
