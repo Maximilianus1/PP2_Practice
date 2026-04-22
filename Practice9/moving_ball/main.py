@@ -2,8 +2,9 @@ import pygame
 from ball import Ball
 
 pygame.init()
-size = width, height = 2000, 600
-screen = pygame.display.set_mode(size)
+# initialize pygame
+width, height = 800, 600
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Moving Ball")
 clock = pygame.time.Clock()
 ball = Ball(width, height)
