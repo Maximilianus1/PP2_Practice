@@ -7,15 +7,12 @@ SCREEN_HEIGHT = 600
 class Game:
 
     def __init__(self, screen, username):
-
         self.screen = screen
         self.username = username
-
         self.speed = 5
         self.score = 0
         self.coins = 0
         self.distance = 0
-
         settings = load_settings()
 
         self.sound = settings["sound"]
@@ -77,10 +74,14 @@ class Game:
 
             self.player.move()
 
-            for g in [self.enemies,self.coins_g,self.powerups,self.obstacles]:
+            for g in [self.enemies,self.coins_g]:
                 for obj in g:
                     obj.move(self.speed)
                     self.screen.blit(obj.image,obj.rect)
+            for g1 in [self.powerups, self.obstacles]:
+                for obj in g1:
+                    self.screen.blit(obj.image,obj.rect)
+
 
             self.screen.blit(self.player.image,self.player.rect)
 
@@ -92,8 +93,6 @@ class Game:
             clock.tick(60)
 
     def check_collisions(self):
-
-        # coins
         for c in pygame.sprite.spritecollide(self.player, self.coins_g, True):
             self.coins += c.value
         for p in pygame.sprite.spritecollide(self.player, self.powerups, True):
@@ -101,13 +100,16 @@ class Game:
             self.active_power = p.type
             self.power_timer = pygame.time.get_ticks()
 
-            if p.type == "shield":
-                self.shield = True
-
             if p.type == "nitro":
-                self.speed *= 2
+                self.active_power = "nitro"
+                if self.speed < 20:
+                    self.speed *= 2
 
-            if p.type == "repair":
+                self.power_end_time = pygame.time.get_ticks() + 4000
+            elif p.type == "shield":
+                self.active_power = "shield"
+                self.shield = True
+            elif p.type == "repair":
                 self.score += 5
         if pygame.sprite.spritecollideany(self.player, self.enemies):
 
@@ -202,24 +204,28 @@ class Power(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        self.type=random.choice(["nitro","shield","repair"])
-
-        self.image=pygame.image.load(f"assets/{self.type}.png")
-        self.image=pygame.transform.scale(self.image,(30,30))
-        self.rect=self.image.get_rect(center=(random.randint(40,360),0))
-
-    def move(self,speed):
-        self.rect.y+=speed
+        self.type = random.choice(["nitro","shield","repair"])
+        self.image = pygame.image.load(f"assets/{self.type}.png")
+        self.image = pygame.transform.scale(self.image,(30,30))
+        self.rect = self.image.get_rect(center=(random.randint(40,360),random.randint(40,600)))
+        self.spawn_time = pygame.time.get_ticks()
+        self.life_time = 5000
+    def update(self):
+        if pygame.time.get_ticks() - self.spawn_time > self.life_time:
+            self.kill()
 
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
 
-        img=random.choice(["oil_spill","traffic_car","speed_bump"])
-        self.image=pygame.image.load(f"assets/{img}.png")
-        self.image=pygame.transform.scale(self.image,(30,30))
-        self.rect=self.image.get_rect(center=(random.randint(40,360),0))
-
-    def move(self,speed):
-        self.rect.y+=speed
+        img = random.choice(["oil_spill","traffic_car","speed_bump"])
+        self.image = pygame.image.load(f"assets/{img}.png")
+        self.image = pygame.transform.scale(self.image,(30,30))
+        self.rect = self.image.get_rect(center=(random.randint(40,360),0))
+        self.rect.center = (random.randint(40, 360), random.randint(40, 600))
+        self.spawn_time = pygame.time.get_ticks()
+        self.life_time = 5000
+    def update(self):
+        if pygame.time.get_ticks() - self.spawn_time > self.life_time:
+            self.kill()
