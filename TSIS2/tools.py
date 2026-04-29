@@ -56,6 +56,8 @@ def draw_shape(surface, tool, start, end, color, fill, brush_size):
         pygame.draw.line(surface, color, start, end, width)
     elif tool == "eraser":
         pygame.draw.line(surface, (255, 255, 255), start, end, width)
+    elif tool == "text":
+        pass
 
 
 def flood_fill(surface, pos, fill_color):

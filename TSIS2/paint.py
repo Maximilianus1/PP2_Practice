@@ -42,6 +42,7 @@ buttons = [
     Button(1090, 10, 80, 40, "Medium", "medium_brush"),
     Button(1180, 10, 80, 40, "Large", "large_brush"),
     Button(1270, 10, 80, 40, "Filler", "flood_fill"),
+    Button(1360, 10, 80, 40, "Text", "text"),
 ]
 r, g, b = 0, 0, 255
 slider_dragging = None
@@ -51,7 +52,9 @@ colored_pixels = []
 running = True
 preview_shape = None  # временная фигура
 
-
+text_mode = False
+text_input = ""
+text_pos = None
 
 
 
@@ -60,14 +63,36 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                brush_size = 2
-            elif event.key == pygame.K_2:
-                brush_size = 5
-            elif event.key == pygame.K_3:
-                brush_size = 10
+            if text_mode:
+                if event.key == pygame.K_RETURN:
+                    if text_input.strip():
+                        canvas.append(("text", text_pos, text_input, current_color))
+                    text_mode = False
+                    text_input = ""
+
+                elif event.key == pygame.K_ESCAPE:
+                    text_mode = False
+                    text_input = ""
+
+                elif event.key == pygame.K_BACKSPACE:
+                    text_input = text_input[:-1]
+
+                else:
+                    text_input += event.unicode
+            else:
+                if event.key == pygame.K_1:
+                    brush_size = 2
+                elif event.key == pygame.K_2:
+                    brush_size = 5
+                elif event.key == pygame.K_3:
+                    brush_size = 10
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = event.pos
+            if current_tool == "text":
+                if pos[1] > TOOLBAR_HEIGHT:
+                    text_mode = True
+                    text_pos = pos
+                    text_input = ""
             # кнопки
             for btn in buttons:
                 if btn.clicked(pos):
@@ -131,10 +156,18 @@ while running:
     screen.fill((255, 255, 255))
     for x, y, color in colored_pixels:
         screen.set_at((x, y), color)
-    for shape in canvas:
-        draw_shape(screen, *shape)
+    for item in canvas:
+        if item[0] == "text":
+            _, pos, text, color = item
+            text_surface = font.render(text, True, color)
+            screen.blit(text_surface, pos)
+        else:
+            draw_shape(screen, *item)
     if preview_shape:
         draw_shape(screen, *preview_shape)
+    if text_mode:
+        preview = font.render(text_input, True, current_color)
+        screen.blit(preview, text_pos)
     pygame.draw.rect(screen, (20, 20, 20), (0, 0, WIDTH, TOOLBAR_HEIGHT))
     for btn in buttons:
         btn.draw(screen)
