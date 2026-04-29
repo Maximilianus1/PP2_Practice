@@ -6,15 +6,17 @@ from db import save_result, get_best
 from config import WIDTH, HEIGHT, CELL
 
 def load_settings():
-    with open("settings.json") as f:
+    with open("settings.json","r") as f:
         return json.load(f)
 
+def save_settings(data):
+    with open("settings.json","w") as f:
+        json.dump(data,f,indent=4)
 
-def run_game(screen, username):
+def run_game(screen, username, settings):
 
     settings = load_settings()
     snake_color = settings["snake_color"]
-
     fps = pygame.time.Clock()
 
     snake_position = [100,50]

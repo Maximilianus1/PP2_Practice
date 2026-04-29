@@ -1,16 +1,23 @@
 import pygame
 import sys
-from game import run_game
+from game import run_game, load_settings, save_settings
 from db import get_top10, init_db
 import json
 
 pygame.init()
+settings = load_settings()
+colors = [
+    (0,255,0),
+    (255,0,0),
+    (0,0,255)
+]
+color_index = colors.index(tuple(settings["snake_color"]))
 init_db()
 WIDTH = 720
 HEIGHT = 480
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 font = pygame.font.SysFont(None, 40)
-
+pygame.display.set_caption("Snake")
 state = "menu"
 username = ""
 
@@ -37,7 +44,17 @@ def draw_leaderboard():
         text=f"{i+1}. {row[0]}  {row[1]} lvl:{row[2]}"
         screen.blit(font.render(text,True,(255,255,255)),(100,y))
         y+=40
+def draw_settings():
+    screen.fill((0,0,0))
 
+    title = font.render("SETTINGS",True,(255,255,255))
+    screen.blit(title,(280,50))
+
+    current = font.render(f"Snake color: {settings['snake_color']}",True,(255,255,255))
+    screen.blit(current,(200,120))
+    screen.blit(font.render("< LEFT  color  RIGHT >",True,(255,255,255)),(170,200))
+
+    screen.blit(font.render("ESC - back & save",True,(255,255,255)),(200,300))
 
 while True:
 
@@ -66,7 +83,7 @@ while True:
             elif state=="username":
 
                 if event.key==pygame.K_RETURN:
-                    run_game(screen, username)
+                    run_game(screen, username, settings)
                     state="menu"
 
                 elif event.key==pygame.K_BACKSPACE:
@@ -74,16 +91,25 @@ while True:
 
                 else:
                     username+=event.unicode
-
+            elif state == "settings":
+                if event.key == pygame.K_LEFT:
+                    color_index = (color_index - 1) % len(colors)
+                    settings["snake_color"] = list(colors[color_index])
+                if event.key == pygame.K_RIGHT:
+                    color_index = (color_index + 1) % len(colors)
+                    settings["snake_color"] = list(colors[color_index])
+                if event.key == pygame.K_ESCAPE:
+                    save_settings(settings)
+                    state = "menu"
             elif state=="leaderboard":
-
                 if event.key==pygame.K_ESCAPE:
                     state="menu"
 
 
     if state=="menu":
         draw_menu()
-
+    elif state == "settings":
+        draw_settings()
     elif state=="leaderboard":
         draw_leaderboard()
 
