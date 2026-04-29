@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "username": "Mamix",
+        "phone": null,
+        "email": "mema@gmail.com",
+        "birthday": "2008-12-23",
+        "group": "Family",
+        "phones": [
+            {
+                "phone": "+77072434343",
+                "type": "mobile"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "username": "Jora",
+        "phone": null,
+        "email": "mefer@gmail.com",
+        "birthday": "2008-12-23",
+        "group": "Family",
+        "phones": [
+            {
+                "phone": "+77072344343",
+                "type": "mobile"
+            }
+        ]
+    }
+]

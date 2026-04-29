@@ -101,22 +101,12 @@ all_sprites = pygame.sprite.Group()
 all_sprites.add(P1)
 all_sprites.add(E1)
 
-#Adding a new User event
-INC_SPEED = pygame.USEREVENT + 1
-pygame.time.set_timer(INC_SPEED, 1000)
-
-# Increase speed over time
-INC_SPEED = pygame.USEREVENT + 1
-pygame.time.set_timer(INC_SPEED, 1000)
-
 # Spawn coins randomly
 SPAWN_COIN = pygame.USEREVENT + 2
 pygame.time.set_timer(SPAWN_COIN, 1500)
 while True:
     # Cycles through all events occurring
     for event in pygame.event.get():
-        if event.type == INC_SPEED:
-            SPEED += 0.2
         if event.type == SPAWN_COIN:
             new_coin = Coin()
             coins.add(new_coin)
@@ -142,8 +132,7 @@ while True:
         COINS += coin.value
 
         # Increase difficulty every N coins
-        if COINS % 5 == 0:
-            SPEED += 1
+        SPEED = SPEED+COINS//5
 
     # To be run if collision occurs between Player and Enemy
     if pygame.sprite.spritecollideany(P1, enemies):
