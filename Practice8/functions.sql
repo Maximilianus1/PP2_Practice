@@ -4,8 +4,8 @@ BEGIN
     RETURN QUERY
     SELECT c.username, c.phone
     FROM contacts c
-    WHERE c.username ILIKE '%' || p || '%'
-       OR c.phone ILIKE '%' || p || '%';
+    WHERE c.username ILIKE '%'||p||'%'
+       OR c.phone ILIKE '%'||p||'%';
 END;
 $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION get_contacts_paginated(p_limit INT, p_offset INT)

@@ -59,7 +59,7 @@ def draw_shape(surface, tool, start, end, color, fill):
         pygame.draw.circle(surface, color, start, radius, width)
     elif tool == "square":
         size = min(abs(x2 - x1), abs(y2 - y1))
-        rect = pygame.Rect(x1, y1, size, size)
+        rect = pygame.Rect(min(x1, x2), min(y1, y2), size, size)
         pygame.draw.rect(surface, color, rect, width)
     elif tool == "right_triangle":
         points = [start, (x1, y2), end]
